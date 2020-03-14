@@ -48,10 +48,9 @@
 
             <div class="q-mt-md q-mb-lg external-links">
                 <p>
-                    <a @click="openExternal('https://morelo.com/')" href="#">https://morelo.com/</a>
+                    <a @click="openExternal('http://morelo.is-great.net/')" href="#">http://morelo.is-great.net/</a>
                 </p>
                 <p>
-                    <a @click="openExternal('https://www.reddit.com/r/morelo/')" href="#">Reddit</a> -
                     <a @click="openExternal('https://github.com/morelo/morelo-electron-wallet')" href="#">Github</a>
                 </p>
             </div>

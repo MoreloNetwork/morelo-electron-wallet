@@ -18,7 +18,7 @@ Please submit any changes as pull requests to the development branch, all change
 ```
 nvm use 11.9.0
 npm install -g quasar-cli
-git clone https://github.com/morelo-netowrk/morelo-electron-wallet
+git clone https://github.com/morelo-network/morelo-electron-wallet
 cd morelo-electron-gui-wallet
 cp path_to_morelo_binaries/arqmad bin/
 cp path_to_morelo_binaries/arqma-wallet-rpc bin/

@@ -4,6 +4,7 @@
   "daemonVersion": "4.0.0",
   "description": "Modern GUI interface for Morelo Currency",
   "productName": "Morelo Electron Wallet",
+
   "repository": {
     "type": "git",
     "url": "https://github.com/morelo-network/morelo-electron-wallet.git"

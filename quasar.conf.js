@@ -206,10 +206,11 @@ module.exports = function (ctx) {
             builder: {
                 // https://www.electron.build/configuration/configuration
 
-                appId: "com.arqma.electron-wallet",
-                productName: "Arqma Electron Wallet",
-                copyright: "Copyright © 2018-2020 Arqma Project, 2018-2020 Ryo/Loki Currency Project",
+                appId: "com.morelo.electron-wallet",
+                productName: "Morelo Electron Wallet",
+                copyright: "Copyright © 2020 Morelo Project, 2019-2020 Arqma Project, 2018-2020 Ryo/Loki Currency Project",
                 afterSign: "build/notarize.js",
+                artifactName: "morelo-electron-wallet-${version}-${os}.${ext}",
 
                 // directories: {
                 //     buildResources: "src-electron/build"
@@ -220,7 +221,7 @@ module.exports = function (ctx) {
                 ],
 
                 linux: {
-                    target: ["AppImage", "snap", "deb"],
+                    target: ["AppImage", "deb"],
                     icon: "src-electron/icons/linux-512x512.png",
                     category: "Finance"
                 },
@@ -250,7 +251,7 @@ module.exports = function (ctx) {
                 },
 
                 files: [
-                    "!build/notarize.js",
+                    "!build/*.js",
                     "!.env"
                 ],
 

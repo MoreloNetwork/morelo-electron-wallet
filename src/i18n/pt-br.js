@@ -243,7 +243,7 @@ export default {
         deleteWallet: "Apagar carteira",
         exportTransactions: "Transações de exportação",
         exportWallet: "Carteira de exportação",
-        exit: "Saír da Carteira GUI Arqma",
+        exit: "Saír da Carteira GUI Morelo",
         importOldGUIWallet: "Importar carteiras da antiga carteira GUI",
         manageKeyImages: "Administrar Imagens de Chave",
         openWallet: "Abrir carteira",
@@ -328,7 +328,7 @@ export default {
         warnings: {
             noKeyImageExport: "Nenhuma chave de imagem encontrada para exportar",
             usingLocalNode: "Não foi possível aceder ao nódulo remoto, mudando para nódulo local apenas",
-            usingRemoteNode: "arqmad não encontrado, utilizando nódulo remoto"
+            usingRemoteNode: "morelod não encontrado, utilizando nódulo remoto"
         }
     },
     placeholders: {
@@ -369,7 +369,7 @@ export default {
         blockHeight: "Altura",
         confirmWords: "Confirme suas palavras-semente mnemônicas",
         enter7words: "Digite as sete primeiras palavras da sua semente mnemônica na ordem correta:",
-        usingEmptyPass: "Usar uma senha vazia deixará sua carteira não criptografada no seu sistema de arquivos!",
+        usingEmptyPass: "Usar uma senha vazia deixará sua carteira não criptografada no seu sistema de mrluivos!",
         checkTransaction: {
             description: "Verify that funds were paid to an address by supplying the transaction ID, the recipient address, the message used for signing and the signature.\nFor a 'Spend Proof' you dont need to provide the recipient address.",
             infoTitles: {

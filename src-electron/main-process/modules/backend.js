@@ -26,11 +26,11 @@ export class Backend {
     init() {
 
         if(os.platform() == "win32") {
-	    this.config_dir = "C:\\ProgramData\\arqma";
-	    this.wallet_dir = `${os.homedir()}\\Documents\\Arqma`
+	    this.config_dir = "C:\\ProgramData\\morelo";
+	    this.wallet_dir = `${os.homedir()}\\Documents\\Morelo`
         } else {
-            this.config_dir = path.join(os.homedir(), ".arqma");
-            this.wallet_dir = path.join(os.homedir(), "Arqma")
+            this.config_dir = path.join(os.homedir(), ".morelo");
+            this.wallet_dir = path.join(os.homedir(), "Morelo")
         }
 
         if (!fs.existsSync(this.config_dir)) {
@@ -46,11 +46,11 @@ export class Backend {
                 const daemon = {
                     type: "remote",
                     p2p_bind_ip: "0.0.0.0",
-                    p2p_bind_port: 19993,
+                    p2p_bind_port: 38411,
                     rpc_bind_ip: "127.0.0.1",
-                    rpc_bind_port: 19994,
+                    rpc_bind_port: 38422,
                     zmq_rpc_bind_ip: "127.0.0.1",
-                    zmq_rpc_bind_port: 19995,
+                    zmq_rpc_bind_port: 38433,
                     out_peers: -1,
                     in_peers: -1,
                     limit_rate_up: -1,
@@ -61,22 +61,22 @@ export class Backend {
                 const daemons = {
                     mainnet: {
                         ...daemon,
-                        remote_host: "node.supportarqma.com",
-                        remote_port: 19994
+                        remote_host: "mrl.supportcryptonight.com",
+                        remote_port: 38422
                     },
                     stagenet: {
                         ...daemon,
                         type: "local",
-                        p2p_bind_port: 39993,
-                        rpc_bind_port: 39994,
-                        zmq_rpc_bind_port: 39995
+                        p2p_bind_port: 46461,
+                        rpc_bind_port: 46462,
+                        zmq_rpc_bind_port: 46463
                     },
                     testnet: {
                         ...daemon,
                         type: "local",
-                        p2p_bind_port: 29993,
-                        rpc_bind_port: 29994,
-                        zmq_rpc_bind_port: 29995
+                        p2p_bind_port: 47461,
+                        rpc_bind_port: 47462,
+                        zmq_rpc_bind_port: 47463
                     }
                 }
 
@@ -103,14 +103,14 @@ export class Backend {
                 },
                 daemon: {
                 type: "local_remote",
-                remote_host: "node.supportarqma.com",
-                remote_port: 19994,
+                remote_host: "mrl.supportcryptonight.com",
+                remote_port: 38422,
                 p2p_bind_ip: "0.0.0.0",
-                p2p_bind_port: 19993,
+                p2p_bind_port: 38411,
                 rpc_bind_ip: "127.0.0.1",
-                rpc_bind_port: 19994,
+                rpc_bind_port: 38422,
                 zmq_rpc_bind_ip: "127.0.0.1",
-                zmq_rpc_bind_port: 19995,
+                zmq_rpc_bind_port: 38433,
                 out_peers: 8,
                 in_peers: 0,
                 limit_rate_up: -1,
@@ -120,7 +120,7 @@ export class Backend {
             },
 
             wallet: {
-                rpc_bind_port: 19999,
+                rpc_bind_port: 39999,
                 log_level: 0
             },
 
@@ -158,8 +158,8 @@ export class Backend {
                     protocol: "https://",
                     hostname: "api.coingecko.com",
                     port: 443,
-                    coin: "arqma",
-                    endpoint: "/api/v3/coins/arqma/tickers"
+                    coin: "morelo",
+                    endpoint: "/api/v3/coins/morelo/tickers"
                 }
             },
             daemons: objectAssignDeep({}, daemons),
@@ -172,8 +172,8 @@ export class Backend {
 
                 this.remotes = [
                     {
-                        host: "node.supportarqma.com",
-                        port: "19994"
+                        host: "mrl.supportcryptonight.com",
+                        port: "38422"
                     }
                 ]
 
@@ -291,7 +291,7 @@ export class Backend {
                   }
 
                   if (path) {
-                      const baseUrl = net_type === "testnet" ? "https://stageblocks.arqma.com/" : "https://explorer.arqma.com/"
+                      const baseUrl = net_type === "testnet" ? "https://stageblocks.arqma.com/" : "https://mrl.supportcryptonight.com/"
                       const url = `${baseUrl}/${path}/`
                       require("electron").shell.openExternal(url + params.id)
                   }
@@ -492,7 +492,7 @@ export class Backend {
                         config: this.config_data,
                         pending_config: this.config_data,
                     });
-                    this.send("show_notification", {type: "warning", textColor: "black", message: "Warning: arqmad not found, using remote node", timeout: 2000})
+                    this.send("show_notification", {type: "warning", textColor: "black", message: "Warning: morelod not found, using remote node", timeout: 2000})
                 }
 
                 this.market.start(this.config_data)

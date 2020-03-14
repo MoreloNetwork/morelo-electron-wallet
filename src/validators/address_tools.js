@@ -1947,10 +1947,10 @@ return{_strlen:lb,_ge_mul8:Va,_keccak:db,_ge_scalarmult:Ta,_ge_fromfe_frombytes_
 
 var arqmaConfig = {
     coinUnitPlaces: 12,
-    coinSymbol: 'ARQ',
-    coinName: 'Arqma',
-    coinUriPrefix: 'arqma:',
-    addressPrefix: 0x2cca
+    coinSymbol: 'MRL',
+    coinName: 'Morelo',
+    coinUriPrefix: 'morelo:',
+    addressPrefix: 0x1a29e1
 };
 
 var cnUtilGen = function(initConfig) {

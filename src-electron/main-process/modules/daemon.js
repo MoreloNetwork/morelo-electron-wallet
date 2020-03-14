@@ -25,7 +25,7 @@ export class Daemon {
     checkVersion() {
         return new Promise((resolve, reject) => {
             if (process.platform === "win32") {
-                let arqmad_path = path.join(__arqma_bin, "arqmad.exe")
+                let arqmad_path = path.join(__arqma_bin, "morelod.exe")
                 let arqmad_version_cmd = `"${arqmad_path}" --version`
                 if (!fs.existsSync(arqmad_path))
                     resolve(false)
@@ -35,7 +35,7 @@ export class Daemon {
                     resolve(stdout)
                 })
             } else {
-                let arqmad_path = path.join(__arqma_bin, "arqmad")
+                let arqmad_path = path.join(__arqma_bin, "morelod")
                 let arqmad_version_cmd = `"${arqmad_path}" --version`
                 if (!fs.existsSync(arqmad_path))
                     resolve(false)
@@ -124,10 +124,10 @@ export class Daemon {
             if(options.app.testnet) {
                 this.testnet = true
                 args.push("--testnet")
-                args.push("--log-file", path.join(options.app.data_dir, "testnet", "logs", "arqmad.log"))
+                args.push("--log-file", path.join(options.app.data_dir, "testnet", "logs", "morelod.log"))
                 //args.push("--add-peer", "45.77.68.151:13310")
             } else {
-                args.push("--log-file", path.join(options.app.data_dir, "logs", "arqmad.log"))
+                args.push("--log-file", path.join(options.app.data_dir, "logs", "morelod.log"))
             }
 
             if(options.daemon.rpc_bind_ip !== "127.0.0.1")
@@ -141,9 +141,9 @@ export class Daemon {
             }
 
             if (process.platform === "win32") {
-                this.daemonProcess = child_process.spawn(path.join(__arqma_bin, "arqmad.exe"), args)
+                this.daemonProcess = child_process.spawn(path.join(__arqma_bin, "morelod.exe"), args)
             } else {
-                this.daemonProcess = child_process.spawn(path.join(__arqma_bin, "arqmad"), args, {
+                this.daemonProcess = child_process.spawn(path.join(__arqma_bin, "morelod"), args, {
                     detached: true
                 })
             }

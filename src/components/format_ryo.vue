@@ -1,6 +1,6 @@
 <template>
 <span>
-    {{ value }} ARQ
+    {{ value }} MRL
 </span>
 </template>
 

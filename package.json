@@ -1,16 +1,16 @@
 {
-  "name": "arqma-electron-wallet",
-  "version": "3.0.0",
-  "daemonVersion": "6.0.1",
-  "description": "Modern GUI interface for Arqma Currency",
-  "productName": "Arqma Electron Wallet",
+  "name": "morelo-electron-wallet",
+  "version": "1.0.0",
+  "daemonVersion": "4.0.0",
+  "description": "Modern GUI interface for Morelo Currency",
+  "productName": "Morelo Electron Wallet",
   "repository": {
     "type": "git",
-    "url": "https://github.com/arqtras/arqma-electron-wallet.git"
+    "url": "https://github.com/morelo-network/morelo-electron-wallet.git"
   },
-  "cordovaId": "com.arqma.wallet",
+  "cordovaId": "com.morelo.wallet",
   "author": {
-    "name": "Arqma",
+    "name": "Morelo",
     "email": "support@arqma.com"
   },
   "private": true,
@@ -46,7 +46,7 @@
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
     "rotating-file-stream": "^1.4.1",
-    "ryo-core-js": "git://github.com/arqtras/ryo-core-js.git",
+    "ryo-core-js": "git://github.com/morelo-network/ryo-core-js.git",
     "utf-8-validate": "^5.0.2",
     "validation": "0.0.1",
     "vue-chartjs": "^3.5.0",

@@ -4,7 +4,7 @@ const path = require("path")
 
 async function download () {
     const { platform } = process
-    const repoUrl = "https://api.github.com/repos/morelo-netowrk/morelo/releases/latest"
+    const repoUrl = "https://api.github.com/repos/morelo-network/morelo/releases/latest"
     try {
         const pwd = process.cwd()
         const downloadDir = path.join(pwd, "downloads")
@@ -18,11 +18,11 @@ async function download () {
             .map(asset => asset["browser_download_url"])
             .find(url => {
                 if (platform === "darwin") {
-                    return url.includes("osx") || url.includes("apple")
+                    return url.includes("apple") || url.includes("apple")
                 } else if (platform === "win32") {
                     return url.includes("windows") || url.includes("win64")
                 }
-                return url.includes("linux")
+                return url.includes("linux-release")
             })
         if (!url) { throw new Error("Download url not found for " + process) }
         console.log("Downloading binary at url: " + url)

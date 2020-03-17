@@ -39,7 +39,7 @@
         </div>
 
     </q-field>
-
+    
     <q-field>
         <div class="row gutter-sm items-end">
             <div class="col-8">
@@ -151,6 +151,15 @@ export default {
             ],
         }
     },
+    data () {
+        return {
+            model: null,
+            options: [
+                {label: "daemon.pool.gntl.co.uk", value: daemon.pool.gntl.co.uk},
+                {label: "mrl.supportcryptonight.com", value: mrl.supportcryptonight.com}
+            ],
+        }
+    },
     computed: mapState({
         theme: state => state.gateway.app.config.appearance.theme,
         config: state => state.gateway.app.pending_config,
@@ -161,7 +170,13 @@ export default {
         },
         setDataPath (file) {
             this.config.app.data_dir = file.target.files[0].path
-        }
+        },
+        setPreset(option) {
+          if (!option) return;
+          const { host, port } = option;
+          if (host) this.config.daemon.remote_host = host;
+          if (port) this.config.daemon.remote_port = port;
+        },
     }
 }
 </script>

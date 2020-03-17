@@ -61,7 +61,7 @@ export class Backend {
                 const daemons = {
                     mainnet: {
                         ...daemon,
-                        remote_host: "mrl.supportcryptonight.com",
+                        remote_host: "daemon.pool.gntl.co.uk",
                         remote_port: 38422
                     },
                     stagenet: {
@@ -102,8 +102,8 @@ export class Backend {
                 timeout: 600000 // 10 minutes
                 },
                 daemon: {
-                type: "local_remote",
-                remote_host: "mrl.supportcryptonight.com",
+                type: "local",
+                remote_host: "daemon.pool.gntl.co.uk",
                 remote_port: 38422,
                 p2p_bind_ip: "0.0.0.0",
                 p2p_bind_port: 38411,
@@ -171,6 +171,14 @@ export class Backend {
                 }
 
                 this.remotes = [
+                    {
+                      host: "daemon.pool.gntl.co.uk",
+                      port: "38422"
+                    },
+                    {
+                      host: "207.244.120.220",
+                      port: "38422"
+                    },
                     {
                         host: "mrl.supportcryptonight.com",
                         port: "38422"

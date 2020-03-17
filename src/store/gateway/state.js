@@ -97,7 +97,7 @@ export default {
         tx_pool_backlog: []
     },
     pool: {
-        status: 2,
+        status: 0,
         desynced: false,
         system_clock_error: false,
         stats: {

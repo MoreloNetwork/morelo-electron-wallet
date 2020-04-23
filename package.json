@@ -1,7 +1,7 @@
 {
   "name": "morelo-electron-wallet",
-  "version": "1.0.2",
-  "daemonVersion": "4.0.1",
+  "version": "1.0.3",
+  "daemonVersion": "4.0.3",
   "description": "Modern GUI interface for Morelo Currency",
   "productName": "Morelo Electron Wallet",
 

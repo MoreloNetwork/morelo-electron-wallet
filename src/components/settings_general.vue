@@ -4,6 +4,7 @@
         <div><q-radio v-model="config.daemon.type" val="local_remote" label="Local + Remote Daemon" /></div>
         <div><q-radio v-model="config.daemon.type" val="local" label="Local Daemon Only" /></div>
         <div><q-radio v-model="config.daemon.type" val="remote" label="Remote Daemon Only" /></div>
+        <div><q-radio v-model="config.daemon.type" val="local_zmq" label="ZMQ Daemon Only" /></div>
     </div>
 
     <p v-if="config.daemon.type == 'local_remote'">
@@ -16,11 +17,10 @@
         Less security, wallet will connect to a remote node to make all transactions.
     </p>
 
-    <q-field v-if="config.daemon.type != 'remote'">
+    <q-field v-if="config.daemon.type != 'remote' && config.daemon.type != 'local_zmq'">
         <div class="row gutter-sm items-end">
             <div class="col-8">
-                <q-input v-model="config.daemon.rpc_bind_ip" float-label="Local Daemon IP"
-                         :dark="theme=='dark'" disable />
+                <q-input v-model="config.daemon.rpc_bind_ip" float-label="Local Daemon IP" :dark="theme=='dark'" disable />
             </div>
             <div class="col-4">
                 <q-input v-model="config.daemon.rpc_bind_port" float-label="Local Daemon Port (RPC)" type="number" :decimals="0" :step="1" min="1024" max="65535" :dark="theme=='dark'" />
@@ -28,18 +28,57 @@
         </div>
     </q-field>
 
-    <q-field v-if="config.daemon.type != 'local'">
-        <div class="row gutter-sm items-end">
-            <div class="col-8">
-                <q-input v-model="config.daemon.remote_host" float-label="Remote Node Host" :dark="theme=='dark'" />
+    <q-field v-if="config.daemon.type != 'local' && config.daemon.type != 'local_zmq'">
+    <div class="row q-mt-md pl-sm">
+        <div class="col-8" label="Remote Node Host">
+            <q-input
+                v-model="config_daemon.remote_host"
+                float-label="Remote Node Host"
+                :placeholder="daemon_defaults.remote_host"
+                :dark="theme=='dark'"
+
+            />
+                <!-- Remote node presets -->
+               <q-btn-dropdown class="remote-dropdown" v-if="config.app.net_type === 'mainnet'" flat>
+                    <q-list link dark no-border>
+                        <q-item v-for="option in remotes" v-bind:key="option.host" @click.native="setPreset(option)" v-close-overlay>
+                            <q-item-main>
+                                <q-item-tile label>{{ option.host }}:{{ option.port }}</q-item-tile>
+                            </q-item-main>
+                        </q-item>
+                    </q-list>
+                </q-btn-dropdown>
             </div>
             <div class="col-4">
-                <q-input v-model="config.daemon.remote_port" float-label="Remote Node Port" type="number" :decimals="0" :step="1" min="1024" max="65535" :dark="theme=='dark'" />
+            <q-input
+               v-model="config_daemon.remote_port"
+               float-label="Remote Port (RPC)"
+               :placeholder="toString(daemon_defaults.remote_port)"
+               type="number"
+               :decimals="0"
+               :step="1"
+               min="1024"
+               max="65535"
+               :dark="theme=='dark'"
+
+           />
             </div>
         </div>
 
     </q-field>
-    
+
+    <q-field v-if="config.daemon.type === 'local_zmq'">
+        <div class="row gutter-sm items-end">
+            <div class="col-8">
+                <q-input v-model="config.daemon.zmq_bind_ip" float-label="Local Daemon IP" :dark="theme=='dark'" disable />
+            </div>
+            <div class="col-4">
+                <q-input v-model="config.daemon.zmq_bind_port" float-label="Local Daemon Port (ZMQ)" type="number" :decimals="0" :step="1" min="1024" max="65535" :dark="theme=='dark'" />
+            </div>
+        </div>
+
+    </q-field>
+
     <q-field>
         <div class="row gutter-sm items-end">
             <div class="col-8">
@@ -125,10 +164,6 @@
                              float-label="Daemon RPC Port" type="number" :decimals="0" :step="1" min="1024" max="65535" />
                 </div>
                 <div class="col-3">
-                    <q-input v-model="config.daemon.zmq_rpc_bind_port" :disable="config.daemon.type == 'remote'" :dark="theme=='dark'"
-                             float-label="Daemon ZMQ Port" type="number" :decimals="0" :step="1" min="1024" max="65535" />
-                </div>
-                <div class="col-3">
                     <q-input v-model="config.wallet.rpc_bind_port" :disable="config.daemon.type == 'remote'" :dark="theme=='dark'"
                              float-label="Wallet RPC Port" type="number" :decimals="0" :step="1" min="1024" max="65535" />
                 </div>
@@ -151,34 +186,56 @@ export default {
             ],
         }
     },
-    data () {
-        return {
-            model: null,
-            options: [
-                {label: "daemon.pool.gntl.co.uk", value: daemon.pool.gntl.co.uk},
-                {label: "mrl.supportcryptonight.com", value: mrl.supportcryptonight.com}
-            ],
-        }
-    },
     computed: mapState({
         theme: state => state.gateway.app.config.appearance.theme,
+        remotes: state => state.gateway.app.remotes,
         config: state => state.gateway.app.pending_config,
+        config_daemon (state) {
+            return this.config.daemons[this.config.app.net_type]
+        },
+        is_remote (state) {
+            return this.config_daemon.type === 'remote'
+        },
+        defaults: state => state.gateway.app.defaults,
+        daemon_defaults (state) {
+            return this.config.daemons[this.config.app.net_type]
+        }
     }),
+    mounted () {
+        if(this.randomise_remote && this.remotes.length > 0 && this.config.app.net_type === "mainnet") {
+            const index = Math.floor(Math.random() * Math.floor(this.remotes.length));
+            this.setPreset(this.remotes[index]);
+        }
+    },
     methods: {
-        selectPath () {
-            this.$refs.fileInput.click()
+        selectPath (type) {
+
+            this.$refs['fileInput'].click()
         },
         setDataPath (file) {
-            this.config.app.data_dir = file.target.files[0].path
+            if (file.target.files && file.target.files.length > 0) {
+                this.config.app.data_dir = file.target.files[0].path
+            }
         },
-        setPreset(option) {
-          if (!option) return;
-          const { host, port } = option;
-          if (host) this.config.daemon.remote_host = host;
-          if (port) this.config.daemon.remote_port = port;
+        setPreset (option) {
+
+            if (!option) return;
+
+            const { host, port } = option;
+            if (host) this.config_daemon.remote_host = host;
+            if (port) this.config_daemon.remote_port = port;        },
+        toString (value) {
+            if (!value && typeof value !== "number") return ""
+            return String(value);
         },
+        data () {
+        return {
+            select: 0,
+        }
+    },
     }
 }
+
 </script>
 
 <style lang="scss">

@@ -110,7 +110,8 @@ module.exports = function (ctx) {
                 "QTh",
                 "QTr",
                 "QTd",
-                "QTableColumns"
+                "QTableColumns",
+                "QSlider"
             ],
             directives: [
                 "Ripple",
@@ -208,7 +209,7 @@ module.exports = function (ctx) {
 
                 appId: "com.morelo.electron-wallet",
                 productName: "Morelo Electron Wallet",
-                copyright: "Copyright © 2020 Morelo Project, 2019-2020 Arqma Project, 2018-2020 Ryo/Loki Currency Project",
+                copyright: "Copyright © 2018-2020 ArQmA Project, Morelo Project, 2018-2020 Ryo/Loki Currency Project",
                 afterSign: "build/notarize.js",
                 artifactName: "morelo-electron-wallet-${version}-${os}.${ext}",
 
@@ -240,7 +241,7 @@ module.exports = function (ctx) {
                 },
 
 //                dmg: {
-//                    background: "src-electron/build/arqma-dmg.tiff",
+//                    background: "src-electron/build/morelo-dmg.tiff",
 //                    sign: false
 //                },
 

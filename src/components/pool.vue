@@ -1,6 +1,6 @@
 <template>
 <q-modal v-model="isVisible" maximized class="pool-modal">
-    <q-modal-layout>
+    <q-modal-layout class="noscrollers">
         <q-toolbar slot="header" color="dark" inverted>
             <q-btn flat round dense @click="isVisible = false" icon="reply" />
             <q-toolbar-title shrink>
@@ -141,7 +141,7 @@
                         </q-field>
                     </div>
                     <div class="col-6">
-                        <q-field>
+                    <!--    <q-field>
                             <q-checkbox v-model="enableStats" label="Privately Share Hashrate" />
                             <q-btn
                                 @click="modals.stats = true"
@@ -151,7 +151,7 @@
                                 size="sm"
                                 dense round flat
                                 />
-                        </q-field>
+                        </q-field>  -->
                     </div>
                     <div class="col-3">
                         <span>Pool status:</span>
@@ -663,6 +663,7 @@
 </q-modal>
 </template>
 
+
 <script>
 import Vue from "vue"
 import { required, between } from "vuelidate/lib/validators"
@@ -769,8 +770,8 @@ export default {
             }
             return "Select wallet address"
         },
-        settings_changed: function () {
-            this.settings.mining.uniform = !this.enableStats
+       settings_changed: function () {
+           this.settings.mining.uniform = !this.enableStats
             return this.currentSettings != JSON.stringify(this.settings)
         },
         cols_workers_visible: function() {
@@ -894,9 +895,9 @@ export default {
                 bindPort: { between: between(1024, 65535) },
             },
             varDiff: {
-                startDiff: { between: between(1000, 100000000) },
-                minDiff: { between: between(1000, 100000000) },
-                maxDiff: { between: between(1000, 100000000) },
+                startDiff: { between: between(1000, 1000000) },
+                minDiff: { between: between(1000, 1000000) },
+                maxDiff: { between: between(1000, 1000000) },
                 targetTime: { between: between(15, 600) },
                 retargetTime: { between: between(30, 1200) },
                 variancePercent: { between: between(20, 80) },
@@ -941,11 +942,11 @@ export default {
                     enabled: true,
                     startDiff: 5000,
                     minDiff: 1000,
-                    maxDiff: 100000000,
-                    targetTime: 30,
+                    maxDiff: 1000000,
+                    targetTime: 45,
                     retargetTime: 60,
-                    variancePercent: 30,
-                    maxJump: 100,
+                    variancePercent: 45,
+                    maxJump: 30,
                     fixedDiffSeparator: "."
                 },
             },
@@ -953,11 +954,11 @@ export default {
                 enabled: true,
                 startDiff: 5000,
                 minDiff: 1000,
-                maxDiff: 100000000,
-                targetTime: 30,
+                maxDiff: 1000000,
+                targetTime: 45,
                 retargetTime: 60,
-                variancePercent: 30,
-                maxJump: 100,
+                variancePercent: 45,
+                maxJump: 30,
                 fixedDiffSeparator: "."
             },
             cols_blocks: [
@@ -1123,7 +1124,23 @@ export default {
         Identicon
     }
 }
+onload = () => {
+  const webview = document.querySelector('webview')
+  const indicator = document.querySelector('.indicator')
+
+  const loadstart = () => {
+    indicator.innerText = 'loading...'
+  }
+
+  const loadstop = () => {
+    indicator.innerText = ''
+  }
+
+  webview.addEventListener('did-start-loading', loadstart)
+  webview.addEventListener('did-stop-loading', loadstop)
+}
 </script>
+
 
 <style lang="scss">
 .notification.danger {
@@ -1199,5 +1216,14 @@ body.dark {
         box-shadow: inset rgba(255, 255, 255, 0.6) 0 2px 2px, inset rgba(0, 0, 0, 0.3) 0 -2px 6px;
         border-radius: 2px;
     }
+}
+.noscrollers {
+    overflow: hidden;
+}
+webview {
+    display: 1 1 0;
+    border: none;
+    height: 100vh;
+    width: 100vw;
 }
 </style>

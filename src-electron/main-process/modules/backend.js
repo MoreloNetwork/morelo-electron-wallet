@@ -4,6 +4,9 @@ import { Market } from "./market";
 import { Pool } from "./pool";
 import { ipcMain, dialog } from "electron";
 
+
+// import { spawn } from 'child_process'
+
 const os = require("os");
 const fs = require("fs");
 const path = require("path");
@@ -21,9 +24,16 @@ export class Backend {
         this.wallet_dir = null
         this.config_file = null
         this.config_data = {}
+        this.isPoolInitialized = false
+        this.remote_height = 0
+        this.remotes = []
     }
-
     init() {
+
+    this.remotes = [{host: "daemon.pool.gntl.co.uk", port: "38422"},
+        {host: "207.244.120.220", port: "38422"},
+        {host: "mrl.supportcryptonight.com", port: "38422"}]
+
 
         if(os.platform() == "win32") {
 	    this.config_dir = "C:\\ProgramData\\morelo";
@@ -49,8 +59,8 @@ export class Backend {
                     p2p_bind_port: 38411,
                     rpc_bind_ip: "127.0.0.1",
                     rpc_bind_port: 38422,
-                    zmq_rpc_bind_ip: "127.0.0.1",
-                    zmq_rpc_bind_port: 38433,
+                    zmq_bind_ip: "127.0.0.1",
+                    zmq_bind_port: 38433,
                     out_peers: -1,
                     in_peers: -1,
                     limit_rate_up: -1,
@@ -69,14 +79,14 @@ export class Backend {
                         type: "local",
                         p2p_bind_port: 46461,
                         rpc_bind_port: 46462,
-                        zmq_rpc_bind_port: 46463
+                        zmq_bind_port: 46463
                     },
                     testnet: {
                         ...daemon,
                         type: "local",
                         p2p_bind_port: 47461,
                         rpc_bind_port: 47462,
-                        zmq_rpc_bind_port: 47463
+                        zmq_bind_port: 47463
                     }
                 }
 
@@ -109,8 +119,8 @@ export class Backend {
                 p2p_bind_port: 38411,
                 rpc_bind_ip: "127.0.0.1",
                 rpc_bind_port: 38422,
-                zmq_rpc_bind_ip: "127.0.0.1",
-                zmq_rpc_bind_port: 38433,
+                zmq_bind_ip: "127.0.0.1",
+                zmq_bind_port: 38433,
                 out_peers: 8,
                 in_peers: 0,
                 limit_rate_up: -1,
@@ -141,11 +151,11 @@ export class Backend {
                     enabled: true,
                     startDiff: 5000,
                     minDiff: 1000,
-                    maxDiff: 100000000,
-                    targetTime: 30,
+                    maxDiff: 1000000,
+                    targetTime: 45,
                     retargetTime: 60,
-                    variancePercent: 30,
-                    maxJump: 100,
+                    variancePercent: 45,
+                    maxJump: 30,
                     fixedDiffSeparator: ".",
                 },
             },
@@ -170,21 +180,6 @@ export class Backend {
 
                 }
 
-                this.remotes = [
-                    {
-                      host: "daemon.pool.gntl.co.uk",
-                      port: "38422"
-                    },
-                    {
-                      host: "207.244.120.220",
-                      port: "38422"
-                    },
-                    {
-                        host: "mrl.supportcryptonight.com",
-                        port: "38422"
-                    }
-                ]
-
         ipcMain.on("event", (event, data) => {
             this.receive(data)
         })
@@ -197,8 +192,19 @@ export class Backend {
             event,
             data
         }
+
+        if (this.config_data.pool.server.enabled) {
+            if (this.config_data.daemon.type === 'local_zmq') {
+                if(event === "set_daemon_data") {
+                    if(data.info && data.info.hasOwnProperty("isDaemonSyncd") && data.info.isDaemonSyncd) {
+                        this.pool.startWithZmq()
+                    }
+                }
+             }
+         }
         this.mainWindow.webContents.send("event", message)
     }
+
 
     receive(data) {
 
@@ -226,7 +232,6 @@ export class Backend {
     handle(data) {
 
         let params = data.data
-
         switch (data.method) {
           case "set_language":
             this.send("set_language", { lang: params.lang })
@@ -277,6 +282,7 @@ export class Backend {
                 break;
 
             case "save_pool_config":
+                const originalServerState = this.config_data.pool.server.enabled
                 Object.keys(params).map(key => {
                     this.config_data.pool[key] = Object.assign(this.config_data.pool[key], params[key])
                 })
@@ -284,7 +290,17 @@ export class Backend {
                     this.send("set_app_data", {
                         config: this.config_data
                     })
+
                     this.pool.init(this.config_data)
+                    if(!originalServerState) {
+                        if (this.config_data.pool.server.enabled && this.config_data.daemon.type === "local_zmq") {
+                            this.pool.startWithZmq()
+                        }
+                    } else {
+                        if (!this.config_data.pool.server.enabled) {
+                            this.pool.stop()
+                        }
+                    }
                 })
                 break
 
@@ -341,6 +357,8 @@ export class Backend {
                     },
                     config: this.config_data,
                     pending_config: this.config_data,
+                    remotes: this.remotes,
+                    defaults: this.defaults
                 });
                 return;
             }
@@ -411,7 +429,8 @@ export class Backend {
             this.send("set_app_data", {
                 config: this.config_data,
                 pending_config: this.config_data,
-                network_interfaces: network_interfaces
+                network_interfaces: network_interfaces,
+                remotes: [...this.remotes]
             });
 
             // Check to see if data dir exists, if not it may have been on network drive
@@ -576,6 +595,7 @@ export class Backend {
                             this.walletd.listWallets(true)
 
                             this.pool.init(this.config_data)
+                            this.isPoolInitialized = true
 
                             this.send("set_app_data", {
                                 status: {

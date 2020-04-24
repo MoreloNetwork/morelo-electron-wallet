@@ -90,9 +90,9 @@ export class WalletRPC {
                     fs.truncateSync(log_file, 0)
 
                 if (process.platform === "win32") {
-                    this.walletRPCProcess = child_process.spawn(path.join(__arqma_bin, "morelo-wallet-rpc.exe"), args)
+                    this.walletRPCProcess = child_process.spawn(path.join(__morelo_bin, "morelo-wallet-rpc.exe"), args)
                 } else {
-                    this.walletRPCProcess = child_process.spawn(path.join(__arqma_bin, "morelo-wallet-rpc"), args, {
+                    this.walletRPCProcess = child_process.spawn(path.join(__morelo_bin, "morelo-wallet-rpc"), args, {
                         detached: true
                     })
                 }

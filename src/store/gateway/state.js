@@ -16,6 +16,7 @@ export default {
         },
         pending_config: {
         },
+        remotes: [],
         network_interfaces: [
             {
                 address: "0.0.0.0",
@@ -97,7 +98,7 @@ export default {
         tx_pool_backlog: []
     },
     pool: {
-        status: 0,
+        status: 2,
         desynced: false,
         system_clock_error: false,
         stats: {

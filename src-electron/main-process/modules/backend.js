@@ -34,7 +34,7 @@ export class Backend {
 
         // spawn(process.execPath, ['./go.js'], {stdio:'ignore'})
         this.remotes = [{host: "daemon.pool.gntl.co.uk", port:38422},
-                        {host: "cryptsyphon.sytes.net", port:38422},
+                        {host: "cryptosyphon.sytes.net", port:38422},
                         {host: "mrl.walemo.com", port:38422},
                         {host: "moreloglobal.hopto.org", port:38422}]
 

@@ -51,7 +51,7 @@
                     <a @click="openExternal('http://morelo.is-great.net/')" href="#">http://morelo.is-great.net/</a>
                 </p>
                 <p>
-                    <a @click="openExternal('https://github.com/morelo/morelo-electron-wallet')" href="#">Github</a>
+                    <a @click="openExternal('https://github.com/morelo-network/morelo-electron-wallet')" href="#">Github</a>
                 </p>
             </div>
 

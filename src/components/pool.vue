@@ -409,7 +409,11 @@
                 </p>
             </div>
         </div>
-
+        <div v-if="page=='stats'">
+            <div class="q-layout-page">
+              <webview src="http://morelo.is-great.net/" autosize="on" ></webview>
+            </div>
+        </div>
         <div v-if="page=='blocks'">
             <div class="q-pa-md">
                 <h6 class="text-weight-light q-mt-xs q-mb-md">Blocks Found</h6>
@@ -689,6 +693,7 @@ export default {
                 {label: "Dashboard", value: "main", icon: "dashboard"},
                 {label: "Workers", value: "workers", icon: "person"},
                 {label: "Blocks", value: "blocks", icon: "view_list"},
+                {label: "Stats", value: "stats", icon: "view_list"},
             ]
             return tabs
         },

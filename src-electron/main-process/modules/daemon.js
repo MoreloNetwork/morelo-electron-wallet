@@ -53,7 +53,7 @@ export class Daemon {
      checkRemoteHeight() {
         let url = "https://mrl.supportcryptonight.com/api/networkinfo"
         if(this.testnet) {
-            url = "https://stageblocks.morelo.com/api/networkinfo"
+            url = "https://stageblocks.arqma.com/api/networkinfo"
         }
         request(url).then(response => {
             try {

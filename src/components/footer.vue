@@ -66,7 +66,7 @@ export default {
             if(this.config.daemon.type === "remote")
                 return 0
             let pct = 0.0
-            if(this.config.daemon.type === "local_zmq")
+            if(this.config.daemon.type === "local_zmq") 
             {
                 pct = (100 * this.daemon.info.height / this.daemon.info.target_height).toFixed(1)
             } else {

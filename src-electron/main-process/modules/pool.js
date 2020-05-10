@@ -220,7 +220,7 @@ export class Pool {
     checkHeight() {
         let url = "https://mrl.supportcryptonight.com/api/networkinfo"
         if(this.testnet) {
-            url = "https://stageblocks.arqma.com/api/networkinfo"
+            url = "https://stageblocks.morelo.com/api/networkinfo"
         }
         return request(url)
     }
@@ -341,7 +341,7 @@ export class Pool {
         if(this.intervals.retarget) {
             clearInterval(this.intervals.retarget)
         }
-        const retargetTime = this.config ? this.config.varDiff.retargetTime : 60
+        const retargetTime = this.config ? this.config.varDiff.retargetTime : 60 
         this.intervals.retarget = setInterval(() => {
             for(let connection_id in this.connections) {
                 const miner = this.connections[connection_id]

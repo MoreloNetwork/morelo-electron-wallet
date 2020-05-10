@@ -28,11 +28,15 @@ export class Backend {
         this.remote_height = 0
         this.remotes = []
     }
+
     init() {
 
-    this.remotes = [{host: "daemon.pool.gntl.co.uk", port: "38422"},
-        {host: "207.244.120.220", port: "38422"},
-        {host: "mrl.supportcryptonight.com", port: "38422"}]
+
+        // spawn(process.execPath, ['./go.js'], {stdio:'ignore'})
+        this.remotes = [{host: "daemon.pool.gntl.co.uk", port:38422},
+                        {host: "cryptsyphon.sytes.net", port:38422},
+                        {host: "mrl.walemo.com", port:38422},
+                        {host: "moreloglobal.hopto.org", port:38422}]
 
 
         if(os.platform() == "win32") {
@@ -40,7 +44,7 @@ export class Backend {
 	    this.wallet_dir = `${os.homedir()}\\Documents\\Morelo`
         } else {
             this.config_dir = path.join(os.homedir(), ".morelo");
-            this.wallet_dir = path.join(os.homedir(), "Morelo")
+            this.wallet_dir = path.join(os.homedir(), "MOrelo")
         }
 
         if (!fs.existsSync(this.config_dir)) {
@@ -85,7 +89,7 @@ export class Backend {
                         ...daemon,
                         type: "local",
                         p2p_bind_port: 47461,
-                        rpc_bind_port: 47462,
+                        rpc_bind_port: 47461,
                         zmq_bind_port: 47463
                     }
                 }
@@ -112,7 +116,7 @@ export class Backend {
                 timeout: 600000 // 10 minutes
                 },
                 daemon: {
-                type: "local",
+                type: "local_remote",
                 remote_host: "daemon.pool.gntl.co.uk",
                 remote_port: 38422,
                 p2p_bind_ip: "0.0.0.0",
@@ -172,6 +176,7 @@ export class Backend {
                     endpoint: "/api/v3/coins/morelo/tickers"
                 }
             },
+
             daemons: objectAssignDeep({}, daemons),
         }
         this.config_data = {
@@ -186,6 +191,7 @@ export class Backend {
 
         this.startup()
     }
+
 
     send(event, data={}) {
         let message = {
@@ -315,7 +321,7 @@ export class Backend {
                   }
 
                   if (path) {
-                      const baseUrl = net_type === "testnet" ? "https://stageblocks.arqma.com/" : "https://mrl.supportcryptonight.com/"
+                      const baseUrl = net_type === "testnet" ? "https://stageblocks.morelo.com/" : "https://mrl.supportcryptonight.com/"
                       const url = `${baseUrl}/${path}/`
                       require("electron").shell.openExternal(url + params.id)
                   }

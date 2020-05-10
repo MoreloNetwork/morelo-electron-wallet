@@ -44,7 +44,7 @@ export class Backend {
 	    this.wallet_dir = `${os.homedir()}\\Documents\\Morelo`
         } else {
             this.config_dir = path.join(os.homedir(), ".morelo");
-            this.wallet_dir = path.join(os.homedir(), "MOrelo")
+            this.wallet_dir = path.join(os.homedir(), "Morelo")
         }
 
         if (!fs.existsSync(this.config_dir)) {
@@ -89,7 +89,7 @@ export class Backend {
                         ...daemon,
                         type: "local",
                         p2p_bind_port: 47461,
-                        rpc_bind_port: 47461,
+                        rpc_bind_port: 47462,
                         zmq_bind_port: 47463
                     }
                 }

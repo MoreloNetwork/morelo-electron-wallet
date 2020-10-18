@@ -321,7 +321,7 @@ export class Backend {
                   }
 
                   if (path) {
-                      const baseUrl = net_type === "testnet" ? "https://stageblocks.morelo.com/" : "https://mrl.supportcryptonight.com/"
+                      const baseUrl = net_type === "testnet" ? "https://stageblocks.morelo.com" : "http://explorer.morelo-network.com"
                       const url = `${baseUrl}/${path}/`
                       require("electron").shell.openExternal(url + params.id)
                   }

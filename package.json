@@ -1,12 +1,12 @@
 {
   "name": "morelo-electron-wallet",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "daemonVersion": "5.2.0",
   "description": "Modern GUI interface for Morelo Currency",
   "productName": "Morelo Electron Wallet",
   "repository": {
     "type": "git",
-    "url": "https://github.com/morelo-network/morelo-electron-wallet.git"
+    "url": "https://github.com/morelonetwork/morelo-electron-wallet.git"
   },
   "cordovaId": "com.morelo.wallet",
   "author": {
